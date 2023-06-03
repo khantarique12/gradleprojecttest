@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+/**
+* The configuration code above declares one properties, LOG_PATH
+*whose values represent the paths to store log files and archived log files respectively.
+*/
+	<Properties>
+		<Property name="filename">./logs</Property>
+	</Properties>
+	<Appenders>
+		<RollingFile name="file"
+			fileName="${filename}/logdemo.log"
+			filePattern="${filename}/logdemo-%d{HH-mm-ss-SSS}.log">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss} [%t] %-5level %logger{36}-%msg%n</pattern>
+			</PatternLayout>
+			<SizeBasedTriggeringPolicy size="2kb" />
+		</RollingFile>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+	</Appenders>
+	<Loggers>
+
+		<Logger name="GradleTest1" level="trace" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="trace">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Root>
+
+	</Loggers>
+</Configuration>   
