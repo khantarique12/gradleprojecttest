@@ -1,22 +1,28 @@
 package Oauth2WithJWT;
 
-import org.eclipse.jetty.server.Authentication;
-import ch.qos.logback.core.model.Model;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@Controller
 
-@Path("/dashboard")
+@RequestMapping("/dashboard")
 public class DashboardController {
 
+	@Autowired
 	JwtGeneratorValidator jwtgenval;
-
+	
 	public String name;
 	
 	ValidationHelper validationHelper = new ValidationHelper();
 
-	@GET
+	@GetMapping
 	public String displayDashboard(Authentication request, Model model) {
 		if (validationHelper.validateReturn(request)) {
 			SecurityContext securityContext = SecurityContextHolder.getContext();

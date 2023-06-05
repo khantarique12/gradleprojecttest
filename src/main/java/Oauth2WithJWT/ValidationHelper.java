@@ -1,8 +1,8 @@
 package Oauth2WithJWT;
 
 import java.util.Date;
-import org.eclipse.jetty.server.Authentication;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public class ValidationHelper {
 

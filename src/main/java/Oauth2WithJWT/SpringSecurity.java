@@ -1,22 +1,24 @@
 package Oauth2WithJWT;
 
-import org.eclipse.jetty.server.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SpringSecurity {
 	
 	
 	@Autowired
-	Authentication successHandler;
+	AuthenticationSuccessHandler successHandler;
 	
 	
 	@Bean
@@ -30,12 +32,13 @@ public class SecurityConfig {
     }
 	
 	
+	@SuppressWarnings({ "deprecation", "removal" })
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {    
         http.csrf().disable().cors().disable()
         .authorizeRequests()
-        .antMatchers("/login/**").permitAll()
-        .antMatchers("/dashboard").permitAll()
+        .requestMatchers("/login/**").permitAll()
+        .requestMatchers("/dashboard").permitAll()
         .anyRequest().authenticated().and()
         .formLogin().loginPage("/login").permitAll()
         .and()

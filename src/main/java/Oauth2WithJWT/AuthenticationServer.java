@@ -4,6 +4,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import gradle.project.jettyserver.Calculator;
+
 public class AuthenticationServer {
 	public static void main(String[] args) throws Exception {
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -16,7 +18,7 @@ public class AuthenticationServer {
 		jerseyServlet.setInitOrder(0);
 
 		jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
-				CustomSuccessHandler.class.getCanonicalName());
+				Calculator.class.getCanonicalName());
 
 		try {
 			jettyServer.start();

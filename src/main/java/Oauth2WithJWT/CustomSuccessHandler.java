@@ -1,39 +1,27 @@
 package Oauth2WithJWT;
 
-//import jakarta.ws.rs.GET;
-//import jakarta.ws.rs.Path;
-//import jakarta.ws.rs.Produces;
-//import jakarta.ws.rs.core.MediaType;
-//
-//@Path("hello")
-//public class CustomSuccessHandler {
-//	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String name() {
-//		return "Hello";
-//	}
-//}
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 
+@Component
+public class CustomSuccessHandler implements AuthenticationSuccessHandler{
 
-public abstract class CustomSuccessHandler implements Authentication{
-
-	
+	@Autowired
 	JwtGeneratorValidator jwtgenval;
-	
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+
+	@Override
+	public void onAuthenticationSuccess(jakarta.servlet.http.HttpServletRequest request,
+			jakarta.servlet.http.HttpServletResponse response, Authentication authentication)
+			throws IOException, jakarta.servlet.ServletException {
 		String redirectUrl = null;
 		if(authentication.getPrincipal() instanceof DefaultOAuth2User) {
 		DefaultOAuth2User  userDetails = (DefaultOAuth2User ) authentication.getPrincipal();
@@ -45,8 +33,9 @@ public abstract class CustomSuccessHandler implements Authentication{
 
         	 ((OAuth2AuthenticationToken) authentication).setDetails(tokenDetails);
         	 redirectUrl = "/dashboard";
-         }
-		}  
+         } 
+		}
 		new DefaultRedirectStrategy().sendRedirect(request, response, redirectUrl);
-	}
 }
+}
+	
